@@ -9,11 +9,14 @@
  */
 package hangman.hw02;
 
-import java.io.RandomAccessFile;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
+
 import java.lang.Math;
+
+import java.util.ArrayList;
+import java.lang.IllegalStateException;
 
 /**
  * Class desc...
@@ -22,35 +25,40 @@ import java.lang.Math;
  * @author Andy Loc
  */
 public class WordReader {
-    public WordReader(String filename) {
-        String[] dictionary;
-    }
+
+    private static ArrayList<String> dict = new ArrayList<String>();
+
+    public WordReader(String filename) {}
     
     private static String pickHiddenWord() {
-        String hiddenWord;
-
-        return "";
+        if (dict.size() == 0) {
+            throw new IllegalStateException();
+        }
+        else {
+            int randomIdx = (int)(Math.random()*dict.size());
+            String hiddenWord = dict.get(randomIdx);
+            return hiddenWord;    
+        }
     }
 
     private static void readFile(String filename) {
+        File gameWords = new File(filename);
         try {
-            RandomAccessFile gameWords = new RandomAccessFile(filename, "r");
-            int randomIdx = (int)(Math.random()*gameWords.length())+1;
-            gameWords.seek(randomIdx);
-            gameWords.readLine();
-            String data = gameWords.readLine();   
+            Scanner myReader = new Scanner(gameWords);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                System.out.println(data);
+                dict.add(data);
+            }
 
         } catch (FileNotFoundException ex) {
             System.out.println("Failure to find file");
-
-        } catch (IOException ex) {
-            System.out.println("Failure to find file");
         }
-
-        return data;
     }
 
     public static void main(String[] args) {
-        
+        readFile("docs/dict.txt");
+        System.out.println(pickHiddenWord());
+
     }
 }

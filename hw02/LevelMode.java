@@ -9,21 +9,51 @@
  */
 package hangman.hw02;
 
-/**
- * Class desc...
- * 
- * @author Quinten Simet
- * @author Andy Loc
- */
-public class LevelMode {    
-    /** 
-     * main desc...
-     * 
-     * @param args Ignored
-     */
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.lang.System.Logger.Level;
+import java.util.Properties;
+
+
+enum LevelMode {
+    EASY, MEDIUM, HARD;
+
+    private static final String CONFIG = "/resource/config.properties";
+    private static final String DEFAULT_DICTIONARY_FILE = "\\resource\\dict.txt";
+    private static final int DEFAULT_MAXIMUM_NUM_TRIES = 6;
+    private String dictFile;
+    private int maxNumTries;
+    private static Properties properties;
+    
+    private LevelMode() {
+    }
+    
+    public static String getDictFile() {
+        return DEFAULT_DICTIONARY_FILE;
+    }
+
+    public static int getMaxNumTries() {
+        return DEFAULT_MAXIMUM_NUM_TRIES;
+    }
+    
+    private static void init() {
+        String local_dir = System.getProperty("user.dir");
+        try {
+            properties = new Properties();
+            InputStream file = new FileInputStream(new File(local_dir + CONFIG));
+            properties.load(file);
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     public static void main(String[] args) {
-        /**
-         * main desc...
-         */
+        init();
+        System.out.println(properties);
     }
 }
