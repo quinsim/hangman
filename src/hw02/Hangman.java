@@ -7,7 +7,7 @@
  * Revisions:
  *     v1.0 01-15-20 - Initial write-up 
  */
-package hangman.hw02;
+package hw02;
 
 /**
  * Class desc...
