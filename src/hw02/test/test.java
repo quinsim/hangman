@@ -7,7 +7,5 @@ public class test {
         LevelMode game = LevelMode.EASY;
         System.out.println(game.getDictFile());
         System.out.println(game.getMaxNumTries());
-        // System.out.println(game.getProperties());
-      
     }
 }

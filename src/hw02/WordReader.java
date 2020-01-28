@@ -11,6 +11,7 @@ package hw02;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Scanner;
 
 import java.lang.Math;
@@ -18,19 +19,15 @@ import java.lang.Math;
 import java.util.ArrayList;
 import java.lang.IllegalStateException;
 
-/**
- * Class desc...
- * 
- * @author Quinten Simet
- * @author Andy Loc
- */
 public class WordReader {
 
     private static ArrayList<String> dict = new ArrayList<String>();
 
-    public WordReader(String filename) {}
+    public WordReader(String filename) {
+        readFile(filename);
+    }
     
-    private static String pickHiddenWord() {
+    public String pickHiddenWord() {
         if (dict.size() == 0) {
             throw new IllegalStateException();
         }
@@ -41,27 +38,21 @@ public class WordReader {
         }
     }
 
-    private static void readFile(String filename) {
-        File gameWords = null;
+    private void readFile(String filename) {
+        InputStream gameWords = null;
         Scanner myReader = null;
-        try {
-            gameWords = new File(filename);
+        gameWords = this.getClass().getResourceAsStream("/resource/dict.txt");
+        if (gameWords == null) {
+            System.out.println("File " + filename + " not found");
+        }
+        else {
             myReader = new Scanner(gameWords);
             while (myReader.hasNextLine()) {
                 String data = myReader.nextLine();
                 dict.add(data);
             }
-
-        } catch (FileNotFoundException ex) {
-            System.out.println("Failure to find file");
+            myReader.close();
         }
-        myReader.close();
-    }
-
-    public static void main(String[] args) {
-        String local_dir = System.getProperty("user.dir");
-        readFile(local_dir + "/src/resource/dict.txt");
-        System.out.println(pickHiddenWord());
 
     }
 }
